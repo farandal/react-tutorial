@@ -472,8 +472,25 @@ const config = {
 module.exports = config;
 ```
 
-Up to this point we have a minimal ReactJS application step by step, to try it just run 
+Up to this point we have a minimal ReactJS application step by step.
+Add this line of code to your package.json file to add a start script for your app
+
+```javascript
+...
+"scripts": {
+    ...
+    "start": "webpack-dev-server --open --mode development",
+    ...
+```
+
+Then execute npm start to execute the start script defined in the package.json file. 
 
 ```javascript
 npm start
+```
+
+or run the command directly in your terminal  
+
+```bash
+webpack-dev-server
 ```
