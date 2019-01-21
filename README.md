@@ -118,29 +118,361 @@ export default MyComponent;
 Further readings:
 https://reactjs.org/docs/react-component.html
 
-# Creating a React app with ‘Create-React-App’
-
-There are multiple ways and many boilerplates to start with a React app from scratch, but this is the Facebook supported starter kit we are going to use: https://github.com/facebook/create-react-app
-
-## STEP 1
+# Setting up a miminal React application
 
 ```bash
-//For npm < 5.1 install create-react-app globally:
-
-$npm install -g create-react-app
-$create-react-app my-app
-
-//For npm 5.2+ use npx:
-
-$npx create-react-app my-app
-$cd my-app
-$npm start
+git clone --branch v1.0 git@github.com:farandal/react-tutorial.git
+cd react-tutorial
+npm install
+npm start
 ```
 
-### Wait but wait! what is Npx?
+## Table of contents:
 
-Npx is a CLI tool to improve the experience of using packages from the npm registry. The major benefit is that when you install a local dependency using npm -i, it will not be executable in the local path. npx will check whether <command> exists in \$PATH, or in the local project binaries in the node_modules folder.
+* Setting up the project
+* Application structure
+* NodeJS package and dependencies
+* Setting up Babel 
+* Setting up WebPack development environment
+* Wiring up the minimal functional application
 
-https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b
-https://stackoverflow.com/questions/50605219/difference-between-npx-and-npm
-https://blog.npmjs.org/post/162869356040/introducing-npx-an-npm-package-runner
+# Setting up the project
+
+Create a folder somewhere in your file system with the name of the project.
+
+If you haven’t setup a git repository for this project, to keep track of the progress, I suggest to init a repository and you can add the origin later, and also create a package.json file necessary to resolve the dependencies of the project from the npm package registry.mkdir react-tutorial 
+
+```bash
+cd react-tutorial 
+git init
+npm init
+```
+
+# Application structure
+Set up the application files structure in the following way:
+
+* Create a folder called app
+* Create an empty index.js in /app folder
+* Create a folder called components inside the /app folder, this folder will store our React components.
+* Create an empty file called Root.js inside components folder.
+* Create an empty file called MyComponent.js inside the components folder.
+* Create the Babel config file .babelrc
+* Create the webpack.config.js and the webpack.production.config.js files in the root folder
+* Create an app.config.js file to hold important config variable for the project. 
+
+File structure should look like this:
+
+```bash
+- app
+- - components
+- - - Root.js
+- - - MyComponent.js
+- - index.js
+- - app.config.js
+- package.json
+- .babelrc
+- webpack.config.js
+```
+
+# NodeJS package and dependencies
+Please refer to https://nodejs.org, in order to download the right version for your system, if you do not have it already.  
+
+The package.json file is the main configuration / manifest file for a NodeJs package, and it also contain the dependencies for the project that will be resolved from the npm registry. It can be created manually, or it can be created using the npm assistant by running npm init.  
+```bash
+npm init
+```
+
+Follow the instruction for the npm init command as it is requested, and it will generate a package.json file that will look like this:
+
+```javascript
+{
+  "name": "react-tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  },
+  "author": "@farandal - Francisco Aranda <farandal@gmail.com>",
+  "license": "ISC"
+  "dependencies": {}
+  "devDependencies": {}
+}
+```
+
+Modify the package.json file with your editor, and add the dependencies blocks in it.  
+
+```javascript
+"dependencies": {
+   "@babel/plugin-proposal-class-properties": "^7",
+   "babel-plugin-transform-runtime": "^6.23.0",
+   "babel-preset-es2015": "^6.24.1",
+   "babel-preset-react": "^6.24.1",
+   "cross-env": "5.2.0",
+   "react": "16.6.1",
+   "react-dom": "16.6.1",
+   "react-hot-loader": "4.3.12"
+ },
+ "devDependencies": {
+   "@babel/cli": "^7",
+   "@babel/core": "^7",
+   "@babel/preset-env": "^7",
+   "@babel/preset-react": "^7",
+   "@babel/preset-stage-2": "^7",
+   "@babel/register": "^7",
+   "babel-core": "^7.0.0-bridge.0",
+   "babel-loader": "8.0.3",
+   "babel-preset-react-hmre": "1.1.1",
+   "copy-webpack-plugin": "^4.6.0",
+   "css-hot-loader": "1.4.2",
+   "css-loader": "1.0.1",
+   "extract-text-webpack-plugin": "4.0.0-beta.0",
+   "file-loader": "1.1.11",
+   "node-sass": "4.10.0",
+   "open-browser-webpack-plugin": "0.0.5",
+   "react-addons-test-utils": "15.6.2",
+   "react-test-renderer": "16.6.0",
+   "regenerator-runtime": "0.13.0",
+   "rimraf": "2.6.2",
+   "sass-loader": "7.1.0",
+   "style-loader": "0.23.1",
+   "uglifyjs-webpack-plugin": "1.3.0",
+   "url-loader": "1.1.2",
+   "webpack": "4.19.1",
+   "webpack-cli": "3.1.2",
+   "webpack-dev-server": ">=3.1.11",
+   "html-webpack-plugin": "^3.2.0"
+ }
+ ````
+ 
+After adding the dependencies into your package.json file, then you can run yarn or npm  from your root directory to install the dependencies; that will resolve the dependencies and install the packages into your ./node_modules folder. 
+
+```bash
+cd react-tutorial 
+npm install
+```
+
+# Setting up Babel
+Babel is a ‘transpiler’; Basically, all Javascript ES6 (JSX) features are not yet supported by all contemporary browsers, Babel will convert the ES6 expressions into normal Javascript ES5 syntax to be interpretable by all browsers. 
+
+Babel.js is a free and open-source JavaScript compiler and configurable transpiler used in web development. Babel allows software developers to write source code in a preferred programming language or markup language and have it translated by Babel into JavaScript, a language understood by modern web browsers. (Wikipedia)
+
+https://babeljs.io/
+
+Create a file called .babelrc in the root of your project containing this line:
+
+```javascript
+{
+ "presets": ["@babel/preset-env", "@babel/preset-react"]
+}
+```
+
+The .babelrc file is your local configuration for your code in your project. It will affect all files that Babel processes that are in the same directory or in sibling directories of the .babelrc
+
+### @babel/preset-env: is used for compiling Javascript ES6 to ES5
+
+### @babel/preset-react: to compile JSX to Javascript ES5
+
+We have added the dependencies in our package.json file in the previous step, so skip this command; nevertheless, you can execute the npm command to install the dependencies manually. 
+
+```bash
+npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev
+```
+
+# Setting up WebPack development environment
+The main purpose of WebPack is to bundle JavaScript files for usage in a browser, yet it is also capable of transforming, bundling, or packaging just about any resource or asset. https://webpack.js.org
+
+WebPack is a build tool for web applications based on Javascript; it allows to minify, uglify, concatenate and to perform many other operations in the files of your project to generate a distributable version.
+
+WebPack also comes with a webpack-dev-server; a basic http web dev server that comes with features like HMR Hot module replacement which allow a better developing experience.
+
+To enable WebPack, the minimum configuration required is to create a webpack.config.js file in the root of your project indicating that all .js or .jsx files will use the babel-loader except the files within the node_modules folder. 
+
+Webpack works based on the concept of ‘loaders’. A loader basically recognise when a file is required, takes that input, perform the changes and return the desire output. 
+
+```javascript
+module.exports = {
+ module: {
+   rules: [
+     {
+       test: /\.(js|jsx)$/,
+       exclude: /node_modules/,
+       use: {
+         loader: "babel-loader"
+       }
+     }
+   ]
+ }
+};
+
+I will not go too deep in WebPack, but just trying to explain how it works, and showing the most important concepts here. 
+
+This is an example file for the development config for WebPack included within this basic project:
+
+https://github.com/farandal/react-tutorial/blob/v.1.0/webpack.config.js
+
+The first lines of the config file, loads the library itself (WebPack), then the rest of the plugins to be used are imported in the following line using Require.
+
+```javascript
+const { resolve } = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const OpenBrowserPlugin = require('open-browser-webpack-plugin');
+const appConfig = require('./app/app.config');
+```
+
+The entry block, defines which is the file or the files that are going to be taken as an entry point, to start discovering from there the module dependency hierarchy. 
+
+```javascript
+const config = {
+  …
+  mode: 'development',
+  devtool: 'cheap-module-eval-source-map',
+  entry: [
+    'react-hot-loader/patch',
+    'webpack-dev-server/client?' + appConfig.development.url + ':' + appConfig.development.port,
+    'webpack/hot/only-dev-server',
+    'index.js'
+  ],
+  …
+}
+```
+
+The devServer block, contains the port of your localhost where you are exposing the web server. 
+
+The Output block, contains information about in which folder the generated files are gonna be created. In this case we define a /dist folder, and a filename called bundle.js which is the file that will contain all your project minified. 
+
+Notice that Webpack will not create a bundle.js file in your file system, as in development mode is created in memory and exposed in the desire virtual location by the embedded development server that webpack provides. 
+
+The plugins Block, contains the operations to be performed by the plugins; In this case, we are invoking ModuleConcatenationPlugin which will concatenate all your files in the bundle.js, then we are calling the CopyWebpackPlugin to copy the images within your app folder to be exposed by the webserver into /images, then we have the HtmlWebpackPlugin that will take any HtmlTemplate file defined and will inject the necessary dependencies such as the script tag containing the bundle.js reference in the body of the HTML and it will create the generated new html file in /dist/index.html. 
+
+Ultimately, OpenBrowserPlugin will be called to open your browser with the dev-server url, and then the Hot Module Plugin is activated. 
+
+```javasacript
+plugins: [
+   ...
+   new webpack.optimize.ModuleConcatenationPlugin(),
+   new CopyWebpackPlugin([
+     { from: resolve(__dirname, 'app') + '/assets/images', to: 'images' }
+   ]),
+   new HtmlWebpackPlugin({
+     template: HtmlTemplate,
+     filename: resolve(__dirname, '/dist') + '/index.html',
+     inject: 'body'
+   }),
+   new OpenBrowserPlugin({
+     url: appConfig.development.url + ':' + appConfig.development.port
+   }),
+   new webpack.HotModuleReplacementPlugin()
+ ],
+```
+
+# Wiring up the minimal functional application
+
+The index.js will be the main entry point for your application, The first 2 lines imports the React library, then the react-hot-loader is imported for HMR, and then we import the component called Root, which will be the first component to load into our components hierarchy.
+
+render(Root) will call the render lifecycle Component method and if HMR is enable, it will watch the ./components/Root file for changes, then it will re render the component within the Component tag inside the AppContainer.
+
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+//Webpack hot loader plugin.
+import { AppContainer } from 'react-hot-loader';
+//Main entry point of the application
+import Root from './components/Root';
+const render = Component => {
+ ReactDOM.render(
+   <AppContainer>
+     <Component />
+   </AppContainer>,
+   document.getElementById('root')
+ );
+};
+/*
+ The root component is in a separate file,
+ because we are using the Webpack hot loading feature
+*/
+
+render(Root);
+
+/*
+If webpack hot loader is enabled, it will listen  root.js file for modifications;
+if something has been change in the file, it will re render the module.
+*/
+
+if (module.hot) {
+ module.hot.accept('./components/Root', () => {
+   const newApp = require('./components/Root').default;
+   render(newApp);
+ });
+
+}
+```
+
+### Hot Module Replacement (HMR): https://webpack-gatsby.netlify.com/how-to/set-up-hmr-with-react/
+
+## Root Component
+Root will be the first file to load into our components hierarchy. It doesn't do anything particularly, it just return the <App /> component which you can point to any component within your application later.
+
+```javascript
+import App from './Home'; To, import App from './MyOwncomponent';
+app/components/Root.js
+
+import React from 'react';
+import App from './Home';
+
+const Root = () => {
+  return <App />;
+};
+
+export default Root;
+```
+
+## Home Component
+
+Home will be our main functional component, it will read a property from our app.config.json file, and display it within a React Component
+
+In the home component, the app.config.js file is loaded in the second line, the when the React Component is mounted initially the constructor method of the class will be called, and we will set the config.appname property into the State of the component. Then in the Render method of the component we will render the property using JSX. 
+
+The most important part about React, is to be aware, that the state is automatically bound to the 'view'. that means if the state property change, that change will be automatically updated into the view without any kind of listeners. 
+
+### app/components/Home.js
+
+```javascript
+import React from 'react';
+import config from '../app.config';
+
+class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: config.appname
+    };
+  }
+
+  render() {
+    const { name } = this.state; 
+    return <div>{name}</div>;
+  }
+}
+
+export default Home;
+```
+
+### app/app.config.js
+```
+const config = {
+  appname: '@farandal',
+  development: { url: 'http://localhost', port: 8888 },
+  production: {}
+};
+
+module.exports = config;
+```
+
+Up to this point we have a minimal ReactJS application step by step, to try it just run 
+
+```javascript
+npm start
+```
