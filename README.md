@@ -303,6 +303,7 @@ module.exports = {
    ]
  }
 };
+```
 
 I will not go too deep in WebPack, but just trying to explain how it works, and showing the most important concepts here. 
 
