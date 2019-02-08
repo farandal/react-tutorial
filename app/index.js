@@ -5,11 +5,24 @@ import { AppContainer } from 'react-hot-loader';
 //Main entry point of the application
 import Root from './components/Root';
 
+//REDUX
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import itemsReducer from './reducers/items.reducer';
+
+const rootReducer = combineReducers({
+  itemsReducer
+});
+
+const store = createStore(rootReducer);
+
 const render = Component => {
   ReactDOM.render(
-    <AppContainer>
-      <Component />
-    </AppContainer>,
+    <Provider store={store}>
+      <AppContainer>
+        <Component />
+      </AppContainer>
+    </Provider>,
     document.getElementById('root')
   );
 };
