@@ -4,9 +4,9 @@ The React library was released in 2011 by Facebook, and since then, now in 2019 
 
 # Articles in Medium
 
-https://medium.com/@farandal/writing-a-react-js-application-part-1-introduction-to-react-28eb61f95d50
-https://medium.com/@farandal/writing-a-react-js-application-part-2-setting-up-a-minimal-react-application-754ee31b2344
-https://medium.com/@farandal/writing-a-react-js-application-part-3-setting-up-a-minimal-redux-implementation-9158b85fb59d
+* https://medium.com/@farandal/writing-a-react-js-application-part-1-introduction-to-react-28eb61f95d50
+* https://medium.com/@farandal/writing-a-react-js-application-part-2-setting-up-a-minimal-react-application-754ee31b2344
+* https://medium.com/@farandal/writing-a-react-js-application-part-3-setting-up-a-minimal-redux-implementation-9158b85fb59d
 
 # What is React?
 
